@@ -1,44 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react'; 
 import { useParams } from 'react-router-dom';
 
 import Loader from '../Components/Loader';
+import { useAxiosGet } from '../Components/HttpRequests';
 
 function Product() {
 
     const { id } = useParams();
     const url = `https://5f167faba346a00016738e1e.mockapi.io/api/products/${id}`;
-    const [product, setProduct] = useState({
-        loading: false,
-        data: null
-    });
+    const product = useAxiosGet(url);
+    const content = null;
 
-    let content = null;
-
-    useEffect(() => {
-        setProduct({
-            loading: true,
-            data: null,
-            error: false
-        })
-        axios.get(url)
-            .then((response) => {
-                setProduct({
-                    loading: false,
-                    data: response.data,
-                    error: false
-                });
-            })
-            .catch((error) => {
-                setProduct({
-                    loading: false,
-                    data: null,
-                    error: true
-                });
-            })
-    }, [url])
-
-    if(product.error){
+    if (product.error) {
         content = <p> Error...!</p>
     }
 
